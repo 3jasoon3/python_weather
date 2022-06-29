@@ -1,0 +1,27 @@
+#!/usr/bin/env python3.10
+
+#https://api.openweathermap.org/data/2.5/weather?lat=51.809139&lon=55.633129&appid=6a78f9f0239378998cfdac419de32062
+from exceptions import ApiServiceError, IncorrectCityName
+from coordinates import get_coordinates
+from weather_api import get_weather
+from weather_formatter import format_weather
+
+
+def main(city:str):
+    try:
+        coordinates = get_coordinates(city_name=city)
+    except IncorrectCityName:
+        print("Введенные данные некорректны!")
+        exit(1)
+    try:
+        weather = get_weather(coordinates)
+    except ApiServiceError:
+        print("Invalid API key")
+        exit(1)
+    print(format_weather(weather))
+
+if __name__ == "__main__":
+    city = str(input("Введите свой город: "))
+    main(city)
+
+
